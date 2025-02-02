@@ -2,16 +2,10 @@
 
 run code with:
 
-    cd books && go run .
-    cd movies && go run .
-    cd coordinator && go run .
-    cd client && go run .
-
-run tests with:
-
-    go test
-    OR
-    go test -v
+    go run books/main.go
+    go run movies/main.go
+    go run reverse_proxy/main.go
+    go run client/main.go
 
 build with:
 	
