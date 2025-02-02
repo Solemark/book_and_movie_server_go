@@ -2,10 +2,12 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -13,7 +15,8 @@ func main() {
 	checkError(e)
 	defer ln.Close()
 	fmt.Println("Listening at localhost:8001")
-
+	e = os.MkdirAll("data", 0700)
+	checkError(e)
 	for {
 		conn, e := ln.Accept()
 		checkError(e)
@@ -22,29 +25,37 @@ func main() {
 		checkError(e)
 		fmt.Printf("Recieving: %s\nmessage: %s", conn.RemoteAddr(), m)
 
-		writeToBooks(m[2:])
+		book := strings.Split(m[0:len(m)-1], ",")
+		writeToBooks(book)
 		conn.Write([]byte("Book saved to file!\n"))
 		conn.Close()
 	}
 }
 
-func writeToBooks(m string) {
-	f, e := os.Create("books.csv")
+func writeToBooks(b []string) {
+	books := getBooks()
+	books = append(books, b)
+
+	f, e := os.Create("data/books.csv")
 	checkError(e)
 	defer f.Close()
 
-	books := fmt.Sprintf("%s%s", getBooks(), m)
-	w := bufio.NewWriter(f)
+	w := csv.NewWriter(f)
 	defer w.Flush()
 
-	_, e = w.WriteString(books)
-	checkError(e)
+	w.WriteAll(books)
 }
 
-func getBooks() string {
-	r, e := os.ReadFile("books.csv")
+func getBooks() [][]string {
+	f, e := os.Open("data/books.csv")
+	if e != nil {
+		log.Println("data/books.csv does not exist")
+		return [][]string{}
+	}
+	r := csv.NewReader(f)
+	res, e := r.ReadAll()
 	checkError(e)
-	return string(r)
+	return res
 }
 
 func checkError(e error) {

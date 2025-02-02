@@ -2,10 +2,10 @@
 
 run code with:
 
-    go run books/main.go
-    go run movies/main.go
-    go run reverse_proxy/main.go
-    go run client/main.go
+    go run src/books/main.go
+    go run src/movies/main.go
+    go run src/reverse_proxy/main.go
+    go run src/client/main.go
 
 build with:
 	
