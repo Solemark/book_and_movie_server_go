@@ -29,12 +29,11 @@ func main() {
 }
 
 func writeToMovies(m string) {
-	movies := fmt.Sprintf("%s%s", getMovies(), m)
-
 	f, e := os.Create("movies.csv")
 	checkError(e)
 	defer f.Close()
 
+	movies := fmt.Sprintf("%s%s", getMovies(), m)
 	w := bufio.NewWriter(f)
 	defer w.Flush()
 

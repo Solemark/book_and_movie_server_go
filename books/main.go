@@ -29,12 +29,11 @@ func main() {
 }
 
 func writeToBooks(m string) {
-	books := fmt.Sprintf("%s%s", getBooks(), m)
-
 	f, e := os.Create("books.csv")
 	checkError(e)
 	defer f.Close()
 
+	books := fmt.Sprintf("%s%s", getBooks(), m)
 	w := bufio.NewWriter(f)
 	defer w.Flush()
 
