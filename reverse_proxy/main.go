@@ -41,7 +41,7 @@ func sendToBooks(m string) string {
 	checkError(e)
 	defer c.Close()
 
-	fmt.Fprintf(c, m+"\n")
+	fmt.Fprint(c, m+"\n")
 	r, e := bufio.NewReader(c).ReadString('\n')
 	checkError(e)
 	return r
@@ -52,7 +52,7 @@ func sendToMovies(m string) string {
 	checkError(e)
 	defer c.Close()
 
-	fmt.Fprintf(c, m+"\n")
+	fmt.Fprint(c, m+"\n")
 	r, e := bufio.NewReader(c).ReadString('\n')
 	checkError(e)
 	return r
